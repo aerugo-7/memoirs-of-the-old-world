@@ -1,5 +1,6 @@
 (function () {
   var loginButton = document.getElementById("githubLogin");
+  var guestButton = document.getElementById("guestEntry");
   var nextButton = document.getElementById("nextStep");
   var status = document.getElementById("loginStatus");
   var panel = document.getElementById("loginPanel");
@@ -74,6 +75,17 @@
   loginButton.addEventListener("click", function () {
     window.location.href = "/auth/github";
   });
+
+  if (guestButton) {
+    guestButton.addEventListener("click", function () {
+      localStorage.setItem("oldWorldGuest", JSON.stringify({
+        guest: true,
+        enteredAt: new Date().toISOString(),
+      }));
+      localStorage.removeItem("oldWorldAuth");
+      window.location.href = "./journey/food.html";
+    });
+  }
 
   loadMe();
 })();

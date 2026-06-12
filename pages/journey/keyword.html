@@ -11,6 +11,16 @@
     <link rel="stylesheet" href="../../assets/css/journey/integration-nav.css" />
   </head>
   <body>
+    <nav class="old-world-global-nav" aria-label="旧世界回忆录总导航">
+      <a href="../../index.html">首页</a><span class="nav-mark">/</span>
+      <a href="./food.html">吃什么</a>
+      <a href="./trouble.html">烦恼</a>
+      <a href="./keyword.html">关键词</a>
+      <a href="./tombstone.html">墓碑设计</a>
+      <a href="../memory-hall.html">记忆房间</a>
+      <a href="../community.html">社区</a>
+      <a href="../archives/index.html">档案馆</a>
+    </nav>
     <div class="sky-bg" aria-hidden="true">
       <div class="stars-container" id="starsContainer"></div>
       <div class="moon"></div>
@@ -49,6 +59,20 @@
       </div>
     </main>
 
+    <section class="keyword-story-panel" aria-label="关键词匹配墓地故事">
+      <p class="panel-kicker">Cemetery Story Match</p>
+      <h2>把一个词交给档案馆</h2>
+      <p>输入一个你想留下的人生关键词。系统会从墓地故事档案里寻找一篇与你相近的记录；如果没有精确命中，就随机递来一段旧世界的回声。</p>
+      <div class="keyword-search-row">
+        <input id="storyKeywordInput" maxlength="24" placeholder="例如：家、海、母亲、孤独" />
+        <button id="matchStoryBtn" type="button">匹配</button>
+      </div>
+      <button class="keyword-random-button" id="randomStoryBtn" type="button">随机抽取一篇墓地故事</button>
+      <div class="keyword-story-result" id="storyMatchResult" aria-live="polite">
+        <p>等待一个关键词。</p>
+      </div>
+    </section>
+
     <section class="word-detail" id="wordDetail" aria-live="polite">
       <div class="detail-backdrop"></div>
       <article class="detail-card">
@@ -72,5 +96,6 @@
     </div>
 
     <script src="../../assets/js/journey/mosaic.js"></script>
+    <script src="../../assets/js/journey/keyword-story.js"></script>
   </body>
 </html>
