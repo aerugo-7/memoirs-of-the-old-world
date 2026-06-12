@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+Connection string.txt
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime files
+*.pid
+*.seed
+*.pid.lock
+.server.pid
+
+# Build and test output
+dist/
+build/
+coverage/
+.cache/
+.tmp/
+tmp/
+temp/
+
+# Local uploads / generated runtime assets
+uploads/
+server/uploads/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+
+# Backup and temporary files
+*.bak
+*.old
+*.orig
+*.tmp
+*.temp
+*~
+*.swp
+*.swo
+
+# Large raw research image library.
+# Keep these assets locally or move them to external storage/Git LFS if needed.
+数据/墓地摄影数据/图片库/

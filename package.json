@@ -1,0 +1,20 @@
+{
+  "name": "last-notes-data-import",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Data import utilities for Last Notes / 临终笔记.",
+  "scripts": {
+    "start": "node server/index.js",
+    "import:db": "node server/import-to-postgres.js",
+    "rebuild:db": "node server/rebuild-database.js",
+    "inspect:db": "node server/inspect-database.js"
+  },
+  "dependencies": {
+    "csv-parse": "^5.6.0",
+    "dotenv": "^16.4.7",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "pg": "^8.13.1",
+    "xlsx": "^0.18.5"
+  }
+}

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>登录</title>
+    <link rel="stylesheet" href="../assets/css/common.css" />
+    <style>
+      html,
+      body {
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        overflow-x: hidden;
+        background:
+          radial-gradient(circle at 24% 18%, rgba(216, 198, 165, 0.18), transparent 30%),
+          radial-gradient(circle at 76% 70%, rgba(177, 138, 88, 0.1), transparent 34%),
+          linear-gradient(180deg, #050403 0%, #0c0806 54%, #140d08 100%);
+        color: var(--paper);
+        font-family: var(--font-sans);
+      }
+
+      .login-page {
+        position: relative;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 64px 28px;
+        overflow: hidden;
+      }
+
+      .login-page::before,
+      .login-page::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+      }
+
+      .login-page::before {
+        inset: 0;
+        background:
+          linear-gradient(110deg, rgba(233, 205, 154, 0.18), transparent 36%),
+          radial-gradient(ellipse at 30% 20%, rgba(229, 196, 136, 0.22), transparent 32%);
+      }
+
+      .login-page::after {
+        inset: 0;
+        opacity: 0.07;
+        mix-blend-mode: soft-light;
+        background-image:
+          radial-gradient(rgba(255, 247, 223, 0.62) 0.55px, transparent 0.55px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+        background-size: 5px 5px, 83px 83px;
+      }
+
+      .login-panel {
+        position: relative;
+        z-index: 1;
+        width: min(860px, 100%);
+        border: 1px solid rgba(216, 198, 165, 0.16);
+        background:
+          linear-gradient(180deg, rgba(22, 15, 10, 0.88), rgba(12, 8, 6, 0.92)),
+          radial-gradient(circle at 30% 0%, rgba(216, 198, 165, 0.07), transparent 44%);
+        box-shadow:
+          0 34px 100px rgba(0, 0, 0, 0.46),
+          inset 0 1px 0 rgba(244, 230, 199, 0.08);
+        padding: clamp(58px, 8vw, 92px);
+      }
+
+      h1 {
+        margin: 0;
+        color: rgba(244, 230, 199, 0.96);
+        font-family: var(--font-serif);
+        font-size: clamp(5.2rem, 9.4vw, 7.8rem);
+        font-weight: 400;
+        letter-spacing: 0;
+        line-height: 1.08;
+      }
+
+      .lead {
+        margin: 28px 0 0;
+        color: rgba(216, 198, 165, 0.74);
+        font-size: clamp(1.48rem, 2vw, 1.72rem);
+        line-height: 1.85;
+      }
+
+      .auth-actions {
+        display: grid;
+        gap: 22px;
+        margin-top: 52px;
+      }
+
+      .github-button,
+      .next-button {
+        width: 100%;
+        border: 1px solid rgba(244, 230, 199, 0.28);
+        background:
+          linear-gradient(180deg, rgba(216, 198, 165, 0.11), rgba(177, 138, 88, 0.08)),
+          rgba(18, 12, 8, 0.86);
+        color: rgba(244, 230, 199, 0.94);
+        padding: 22px 28px;
+        font: inherit;
+        font-size: clamp(1.28rem, 1.6vw, 1.44rem);
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+      }
+
+      .github-button:hover,
+      .github-button:focus-visible,
+      .next-button:hover,
+      .next-button:focus-visible {
+        border-color: rgba(244, 230, 199, 0.54);
+        background:
+          linear-gradient(180deg, rgba(216, 198, 165, 0.15), rgba(177, 138, 88, 0.1)),
+          rgba(18, 12, 8, 0.92);
+        transform: translateY(-1px);
+        outline: none;
+      }
+
+      .next-button {
+        display: none;
+        text-align: center;
+        text-decoration: none;
+      }
+
+      .status {
+        min-height: 1.8em;
+        margin: 28px 0 0;
+        font-size: clamp(1.28rem, 1.65vw, 1.48rem);
+        color: rgba(238, 220, 184, 0.86);
+        line-height: 1.8;
+      }
+
+      .status.is-success {
+        color: rgba(244, 230, 199, 0.96);
+      }
+
+      .status.is-warning {
+        color: rgba(235, 205, 150, 0.92);
+      }
+
+      .privacy-note,
+      .prototype-note {
+        color: rgba(216, 198, 165, 0.52);
+        font-size: clamp(1.12rem, 1.38vw, 1.24rem);
+        line-height: 1.9;
+      }
+
+      .privacy-note {
+        margin: 38px 0 0;
+      }
+
+      .prototype-note {
+        margin: 10px 0 0;
+      }
+
+      .login-panel.is-authenticated .next-button {
+        display: block;
+      }
+
+      .login-panel.is-authenticated .github-button {
+        opacity: 0.62;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="login-page" aria-label="登录">
+      <section class="login-panel" id="loginPanel">
+        <h1>登录</h1>
+        <p class="lead">登录用于保存你的回忆录进度、发送最终邮件，以及参与后续社区互动。</p>
+
+        <div class="auth-actions">
+          <button class="github-button" id="githubLogin" type="button">使用 GitHub 登录</button>
+          <a class="next-button" id="nextStep" href="./memory-hall.html">下一页</a>
+        </div>
+
+        <p class="status" id="loginStatus" aria-live="polite"></p>
+        <p class="privacy-note">我们只需要你的 GitHub 身份与邮箱，用于保存记录和发送回忆录，不收集无关信息。</p>
+        <p class="prototype-note">登录状态以后端 session 为准，页面只保留基础显示缓存。</p>
+      </section>
+    </main>
+
+    <script src="../assets/js/login.js"></script>
+  </body>
+</html>

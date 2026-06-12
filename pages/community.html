@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <title>旧世界公共档案馆 / Community</title>
+    <link rel="stylesheet" href="../assets/css/common.css" />
+    <link rel="stylesheet" href="../assets/css/community.css?v=20260612-community" />
+  </head>
+  <body class="community-page">
+    <main class="community-shell">
+      <aside class="community-sidebar" aria-label="旧世界社区侧栏">
+        <a class="back-link" href="./memory-hall.html">← 回到记忆房间</a>
+
+        <section class="user-card" id="userCard">
+          <div class="avatar-shell">
+            <img id="userAvatar" alt="" />
+          </div>
+          <div>
+            <p class="eyebrow">Current Visitor</p>
+            <h1 id="userName">读取中</h1>
+            <p id="userRole">旧世界访客</p>
+          </div>
+        </section>
+
+        <nav class="community-tabs" aria-label="社区页面切换">
+          <button class="tab-button is-active" type="button" data-view="wall">留言墙</button>
+          <button class="tab-button" type="button" data-view="posts">分享社区</button>
+          <button class="tab-button" type="button" data-view="mine">我的发布</button>
+          <button class="tab-button" type="button" data-view="agent">AI档案管理员</button>
+        </nav>
+
+        <section class="composer-panel" id="noteComposer">
+          <p class="eyebrow">Memory Wall</p>
+          <h2>留下一张纸条</h2>
+          <textarea id="noteInput" maxlength="50" rows="4" placeholder="50字以内，把一句话贴在旧墙上。"></textarea>
+          <div class="composer-footer">
+            <span id="noteCount">0 / 50</span>
+            <button class="paper-button" id="publishNoteBtn" type="button">留下一张纸条</button>
+          </div>
+        </section>
+
+        <section class="composer-panel is-hidden" id="postComposer">
+          <p class="eyebrow">Community Log</p>
+          <h2>发布旧世界日志</h2>
+          <input id="postTitle" maxlength="40" placeholder="标题" />
+          <textarea id="postContent" rows="6" placeholder="写下你想分享的回声。"></textarea>
+          <input id="postImage" type="file" accept="image/*" />
+          <button class="paper-button" id="publishPostBtn" type="button">发布旧世界日志</button>
+        </section>
+
+        <section class="agent-card" id="agentCard">
+          <p class="eyebrow">Archive Keeper</p>
+          <h2>AI档案管理员</h2>
+          <p>我会替旧世界保管这些声音。你可以留下纸条，也可以阅读别人的回声。</p>
+          <button class="paper-button is-muted" id="toggleAgentBtn" type="button">打开值班窗口</button>
+        </section>
+
+        <p class="status-line" id="statusLine" aria-live="polite"></p>
+      </aside>
+
+      <section class="community-content" aria-live="polite">
+        <header class="community-header">
+          <p class="eyebrow">Memoirs of the Old World</p>
+          <h2 id="viewTitle">留言墙</h2>
+          <p id="viewSubtitle">一面旧墙，贴着来自不同访客的短句。</p>
+        </header>
+
+        <section class="view-panel is-active" id="wallView">
+          <div class="note-wall" id="noteWall"></div>
+        </section>
+
+        <section class="view-panel" id="postsView">
+          <div class="post-grid" id="postGrid"></div>
+        </section>
+
+        <section class="view-panel" id="mineView">
+          <div class="mine-list" id="mineList"></div>
+        </section>
+
+        <section class="view-panel" id="agentView">
+          <div class="agent-workspace">
+            <div class="terminal-card">
+              <p class="eyebrow">Old Terminal</p>
+              <h3>档案管理员值班台</h3>
+              <p>这只是一个预留窗口。之后可以接入 n8n 或 OpenAI，让它读取公共档案并回应访客。</p>
+            </div>
+            <div class="chat-card">
+              <div class="chat-log" id="agentChat">
+                <p class="agent-message">我会替旧世界保管这些声音。</p>
+                <p class="agent-message">你可以问我：这句话应该被放在哪里？</p>
+              </div>
+              <div class="chat-input-row">
+                <input id="agentInput" placeholder="写给档案管理员..." />
+                <button class="paper-button" id="sendAgentBtn" type="button">发送</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <dialog class="post-dialog" id="postDialog">
+      <button class="dialog-close" id="closePostDialog" type="button" aria-label="关闭">×</button>
+      <div id="postDetail"></div>
+    </dialog>
+
+    <script src="../assets/js/community.js?v=20260612-community"></script>
+  </body>
+</html>

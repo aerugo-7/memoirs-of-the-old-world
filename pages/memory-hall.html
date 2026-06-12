@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <title>Memory Hall / 记忆房间</title>
+    <link rel="stylesheet" href="../assets/css/common.css" />
+    <link rel="stylesheet" href="../assets/css/memory-hall.css?v=20260611-archive-card-wide" />
+  </head>
+  <body class="memory-hall-page">
+    <section class="memory-intro" id="memoryIntro" aria-label="Memory Hall 进入介绍">
+      <div class="memory-intro-copy">
+        <p class="intro-kicker">Memory Hall</p>
+        <h1>记忆房间</h1>
+        <div class="intro-text">
+          <p>一个人并不是被简历记住的。他可能被记在一本笔记本里，一张照片里，一台电脑的浏览记录里，一个没有关上的抽屉里。</p>
+          <p>在这里，你将进入一间房间。点击其中的物件，把记忆放进去。最后，系统会根据这些痕迹，尝试还原这个人可能是什么样的人。</p>
+        </div>
+      </div>
+
+      <div class="room-preview" aria-hidden="true">
+        <div class="room-preview-frame">
+          <img src="../assets/images/memory-room-bg.png" alt="" />
+          <span class="preview-node node-a"></span>
+          <span class="preview-node node-b"></span>
+          <span class="preview-node node-c"></span>
+          <span class="preview-node node-d"></span>
+        </div>
+      </div>
+
+      <button class="paper-button enter-room-button" id="enterRoomBtn" type="button">进入房间</button>
+    </section>
+
+    <main class="memory-room is-room-hidden" id="memoryRoom" aria-label="Memory Hall 记忆房间">
+      <div class="room-viewport" id="roomViewport">
+        <div class="room-inner" id="roomInner">
+          <img src="../assets/images/memory-room-bg.png" alt="记忆房间背景" class="room-bg" />
+          <div class="memory-layer" id="memoryLayer"></div>
+          <div class="node-layer" id="nodeLayer" aria-label="记忆热点"></div>
+        </div>
+      </div>
+
+      <div class="memory-count" id="memoryCount">已放入 0 个记忆碎片</div>
+
+      <div class="room-actions">
+        <button class="paper-button is-muted" id="resetViewBtn" type="button">回到全景</button>
+        <button class="paper-button" id="submitMemoriesBtn" type="button">归档这个房间</button>
+      </div>
+
+      <section class="node-card" id="nodeCard" aria-hidden="true">
+        <h2 id="nodeTitle"></h2>
+        <p id="nodeQuestion"></p>
+        <textarea id="memoryInput" rows="5" placeholder="把这段记忆放进房间..."></textarea>
+        <p class="hint">输入后按 Enter 保存，Shift+Enter 换行</p>
+        <div class="dialog-actions">
+          <button class="paper-button" id="saveMemoryBtn" type="button">保存</button>
+          <button class="paper-button is-muted" id="cancelMemoryBtn" type="button">取消</button>
+        </div>
+      </section>
+
+      <section class="digital-browser" id="digitalBrowser" aria-hidden="true">
+        <h2>电脑里的今日世界</h2>
+        <p class="browser-copy">选择一条今日世界的记录，把它存入这间房。</p>
+        <div class="news-categories">
+          <button class="paper-button" data-category="国际新闻" type="button">国际新闻</button>
+          <button class="paper-button" data-category="科技前沿" type="button">科技前沿</button>
+          <button class="paper-button" data-category="文娱" type="button">文娱</button>
+          <button class="paper-button" data-category="游戏" type="button">游戏</button>
+        </div>
+        <div class="browser-status" id="browserStatus" aria-live="polite"></div>
+        <ul class="news-list" id="newsList" aria-live="polite"></ul>
+        <button class="paper-button is-muted" id="closeBrowserBtn" type="button">关闭</button>
+      </section>
+    </main>
+
+    <script src="../assets/js/common.js"></script>
+    <script src="/config/public-env.js"></script>
+    <script src="../assets/js/memory-hall.js?v=20260612-memory-ui-stable"></script>
+  </body>
+</html>

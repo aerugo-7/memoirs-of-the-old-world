@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>旧世界回忆录 / Memoirs of the Old World</title>
+    <meta name="description" content="人类如何被记住" />
+    <link rel="stylesheet" href="./assets/css/common.css" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <main class="prologue" aria-label="旧世界回忆录">
+      <section class="desk-world hero-section" aria-label="旧世界回忆录 Memoirs of the Old World">
+        <div class="room-light" aria-hidden="true"></div>
+        <div class="paper-grain" aria-hidden="true"></div>
+        <canvas id="dust" class="dust" aria-hidden="true"></canvas>
+
+        <section class="title-sequence" aria-label="旧世界回忆录">
+          <p class="project-trace">Memoirs of the Old World</p>
+          <h1>旧世界回忆录</h1>
+          <p class="title-cn">How Humans Are Remembered</p>
+          <p class="title-en">人类如何被记住</p>
+        </section>
+
+        <section class="desk-scene" id="deskScene" aria-label="书桌上的记忆物件">
+          <div class="desk-surface" aria-hidden="true"></div>
+          <div class="lamp-falloff" aria-hidden="true"></div>
+
+          <div class="object archive-file" data-depth="0.55" aria-label="档案夹">
+            <span class="file-tab">Archive</span>
+            <span class="file-line"></span>
+            <span class="file-line short"></span>
+            <span class="stamp">记忆档案</span>
+          </div>
+
+          <div class="object atlas-map" data-depth="0.72" aria-label="地图">
+            <span class="fold f1"></span>
+            <span class="fold f2"></span>
+            <span class="fold f3"></span>
+            <span class="route"></span>
+            <span class="map-label">Atlas</span>
+          </div>
+
+          <div class="object memory-photo" data-depth="0.64" aria-label="照片">
+            <span class="photo-image"></span>
+            <span class="photo-caption">Memory Hall</span>
+          </div>
+
+          <div class="object guestbook" data-depth="0.47" aria-label="留言册">
+            <span class="book-cover"></span>
+            <span class="book-title">Monument</span>
+            <span class="book-mark"></span>
+          </div>
+
+          <div class="object letter" data-depth="0.38" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="object letter letter-secondary" data-depth="0.32" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="object menu" data-depth="0.42" aria-label="纸页">
+            <strong>Atlas</strong>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="object menu menu-secondary" data-depth="0.36" aria-hidden="true">
+            <strong>Note</strong>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="object ticket" data-depth="0.8" aria-hidden="true">
+            <span>Memory</span>
+            <strong>Seat 12</strong>
+          </div>
+
+          <div class="object ticket ticket-secondary" data-depth="0.58" aria-hidden="true">
+            <span>Room</span>
+            <strong>03</strong>
+          </div>
+
+          <div class="object note note-one" data-depth="0.6" aria-hidden="true">
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="object note note-two" data-depth="0.5" aria-hidden="true">
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="object note note-three" data-depth="0.44" aria-hidden="true">
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="object memory-photo memory-photo-secondary" data-depth="0.5" aria-hidden="true">
+            <span class="photo-image"></span>
+            <span class="photo-caption">Trace</span>
+          </div>
+        </section>
+      </section>
+
+      <section class="memory-thread" aria-label="回忆录说明">
+        <div class="thread-inner">
+          <div class="thread-block thread-lead reveal-on-scroll">
+            <p>每个人最终都会被一些东西记住。</p>
+            <p>一句话，一顿饭，一张照片，一间房间，一个习惯。</p>
+            <p>这个网站不是记录死亡，而是让人意识到：我们一直在留下痕迹。</p>
+          </div>
+
+          <div class="trace-steps reveal-on-scroll" aria-label="回忆录线索">
+            <span>味道</span>
+            <span>关键词</span>
+            <span>未说出口的话</span>
+            <span>纪念物</span>
+            <span>房间</span>
+            <span>回忆录</span>
+          </div>
+
+          <div class="thread-block thread-note reveal-on-scroll">
+            <p>你会回答几个问题。系统会从真实档案中寻找与你相似的痕迹。最后生成一份属于你的回忆录。</p>
+          </div>
+
+          <div class="thread-block ethics-note reveal-on-scroll">
+            <p>本项目包含遗言、遗书、墓地、告别等公开资料。</p>
+            <p>我们不以猎奇方式展示它们，也不评价任何人的离开。它们在这里被作为记忆样本，用来思考人如何被记录、理解和记住。</p>
+          </div>
+
+          <div class="thread-entry reveal-on-scroll">
+            <a class="entry-button" href="./pages/login.html" aria-label="登录">
+              <span>登录</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+    <script src="./assets/js/common.js"></script>
+  </body>
+</html>

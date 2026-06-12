@@ -1,0 +1,316 @@
+DATABASE GUIDE
+==============
+
+1. 基本信息
+-----------
+- 数据库类型：PostgreSQL
+- 云服务：Neon
+- 数据库名：neondb
+- Schema：public
+- 表数量：5
+- 总记录数：960
+- 生成时间：2026-06-10T18:15:54.359Z
+
+2. 连接方式
+-----------
+项目代码应使用 `.env` 中的 DATABASE_URL。不要在前端或文档中暴露真实密码。
+
+当前连接串：
+postgresql://USER:PASSWORD@HOST:5432/DATABASE?sslmode=require
+
+.env 示例：
+DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DATABASE?sslmode=require
+
+Node.js 连接方式：
+npm install pg dotenv
+
+```js
+const { Pool } = require("pg");
+require("dotenv").config();
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+module.exports = pool;
+```
+
+DBeaver 连接参数：
+- Host: ep-tiny-pond-aorgvoj9-pooler.c-2.ap-southeast-1.aws.neon.tech
+- Port: 5432
+- Database: neondb
+- Username: neondb_owner
+- Password: npg_sKQlBbzt72rd
+- SSL Mode: require
+
+3. 数据表总览
+-------------
+table            | meaning | records | has_images | purpose                             
+-----------------|---------|---------|------------|-------------------------------------
+last_meals       | 最后一餐数据  | 358     | 否          | 查询人物、最后一餐、罪名、地点、执行方式与中英文展示字段。       
+grave_recipes    | 墓碑食谱数据  | 10      | 是          | 查询墓碑食谱案例、故事背景、食谱正文、厨房笔记和真实入库图片。     
+cemetery_stories | 墓地故事数据  | 8       | 是          | 查询墓地故事、地理背景、故事正文、观察感悟和真实入库图片。       
+last_words       | 死刑犯遗言数据 | 545     | 否          | 查询人物、英文遗言、中文翻译、县/地点、种族、年龄、执行编号和执行日期。
+farewell_letters | 中文遗书数据  | 39      | 否          | 查询中文遗书正文、地区、年龄、性别、职业、时间和方式。         
+
+4. 每张表详细说明
+------------------
+
+4.x last_meals
+- 中文含义：最后一餐数据
+- 记录数：358
+- 是否有图片：否
+- 是否有中英文：是，保留英文原文与中文翻译字段
+- 适合查询：查询人物、最后一餐、罪名、地点、执行方式与中英文展示字段。
+- 重要字段：person_name, food_zh, food_en, crime_zh, execution_year
+
+字段列表：
+column_name         | data_type                   | nullable | default_value                          | description         
+--------------------|-----------------------------|----------|----------------------------------------|---------------------
+id                  | integer                     | NO       | nextval('last_meals_id_seq'::regclass) | 主键 ID               
+person_name         | text                        | YES      |                                        | 人物英文/原始姓名           
+person_name_zh      | text                        | YES      |                                        | 人物中文展示名；当前多为原名复制    
+food_en             | text                        | YES      |                                        | 最后一餐英文原文            
+food_zh             | text                        | YES      |                                        | 最后一餐中文翻译            
+location_en         | text                        | YES      |                                        | 地点英文                
+location_zh         | text                        | YES      |                                        | 地点中文                
+country_en          | text                        | YES      |                                        | 国家/地区英文             
+country_zh          | text                        | YES      |                                        | 国家/地区中文             
+region_en           | text                        | YES      |                                        | 州/省/地区英文            
+region_zh           | text                        | YES      |                                        | 州/省/地区中文            
+crime_en            | text                        | YES      |                                        | 罪名英文                
+crime_zh            | text                        | YES      |                                        | 罪名中文翻译              
+execution_year      | integer                     | YES      |                                        | 执行年份                
+execution_date      | text                        | YES      |                                        | 执行日期文本              
+execution_method_en | text                        | YES      |                                        | 执行方式英文              
+execution_method_zh | text                        | YES      |                                        | 执行方式中文              
+raw_data            | jsonb                       | YES      |                                        | 原始数据追溯 JSONB，不建议直接展示
+created_at          | timestamp without time zone | YES      | CURRENT_TIMESTAMP                      | 记录创建时间              
+
+4.x grave_recipes
+- 中文含义：墓碑食谱数据
+- 记录数：10
+- 是否有图片：是
+- 是否有中英文：是，保留英文原文与中文翻译字段
+- 适合查询：查询墓碑食谱案例、故事背景、食谱正文、厨房笔记和真实入库图片。
+- 重要字段：title_zh, story_background_zh, recipe_steps_zh, images, image_names
+
+字段列表：
+column_name         | data_type                   | nullable | default_value                             | description         
+--------------------|-----------------------------|----------|-------------------------------------------|---------------------
+id                  | integer                     | NO       | nextval('grave_recipes_id_seq'::regclass) | 主键 ID               
+title_en            | text                        | YES      |                                           | 标题英文                
+title_zh            | text                        | YES      |                                           | 标题中文                
+story_background_en | text                        | YES      |                                           | 故事背景英文原文            
+story_background_zh | text                        | YES      |                                           | 故事背景中文              
+recipe_name_zh      | text                        | YES      |                                           | 食谱名称中文              
+recipe_steps_zh     | text                        | YES      |                                           | 食谱步骤中文              
+kitchen_notes_zh    | text                        | YES      |                                           | 厨房笔记中文              
+images              | BYTEA[]                     | YES      |                                           | 真实图片二进制数组 BYTEA[]   
+image_names         | ARRAY                       | YES      |                                           | 图片原始文件名数组           
+image_mime_types    | ARRAY                       | YES      |                                           | 图片 MIME 类型数组        
+raw_data            | jsonb                       | YES      |                                           | 原始数据追溯 JSONB，不建议直接展示
+created_at          | timestamp without time zone | YES      | CURRENT_TIMESTAMP                         | 记录创建时间              
+
+4.x cemetery_stories
+- 中文含义：墓地故事数据
+- 记录数：8
+- 是否有图片：是
+- 是否有中英文：是，保留英文原文与中文翻译字段
+- 适合查询：查询墓地故事、地理背景、故事正文、观察感悟和真实入库图片。
+- 重要字段：title_zh, story_body_zh, images, image_names
+
+字段列表：
+column_name              | data_type                   | nullable | default_value                                | description         
+-------------------------|-----------------------------|----------|----------------------------------------------|---------------------
+id                       | integer                     | NO       | nextval('cemetery_stories_id_seq'::regclass) | 主键 ID               
+title_en                 | text                        | YES      |                                              | 标题英文                
+title_zh                 | text                        | YES      |                                              | 标题中文                
+geographic_background_zh | text                        | YES      |                                              | 地理背景中文              
+story_body_en            | text                        | YES      |                                              | 故事正文英文原文            
+story_body_zh            | text                        | YES      |                                              | 故事正文中文              
+reflection_zh            | text                        | YES      |                                              | 观察感悟中文              
+images                   | BYTEA[]                     | YES      |                                              | 真实图片二进制数组 BYTEA[]   
+image_names              | ARRAY                       | YES      |                                              | 图片原始文件名数组           
+image_mime_types         | ARRAY                       | YES      |                                              | 图片 MIME 类型数组        
+raw_data                 | jsonb                       | YES      |                                              | 原始数据追溯 JSONB，不建议直接展示
+created_at               | timestamp without time zone | YES      | CURRENT_TIMESTAMP                            | 记录创建时间              
+
+4.x last_words
+- 中文含义：死刑犯遗言数据
+- 记录数：545
+- 是否有图片：否
+- 是否有中英文：是，保留英文原文与中文翻译字段
+- 适合查询：查询人物、英文遗言、中文翻译、县/地点、种族、年龄、执行编号和执行日期。
+- 重要字段：person_name, body_zh, body_en, county_zh, race_zh
+
+字段列表：
+column_name      | data_type                   | nullable | default_value                          | description         
+-----------------|-----------------------------|----------|----------------------------------------|---------------------
+id               | integer                     | NO       | nextval('last_words_id_seq'::regclass) | 主键 ID               
+person_name      | text                        | YES      |                                        | 人物英文/原始姓名           
+body_en          | text                        | YES      |                                        | 正文英文原文              
+body_zh          | text                        | YES      |                                        | 正文中文翻译或中文原文         
+location_en      | text                        | YES      |                                        | 地点英文                
+location_zh      | text                        | YES      |                                        | 地点中文                
+county_en        | text                        | YES      |                                        | 县名英文                
+county_zh        | text                        | YES      |                                        | 县名中文                
+race_en          | text                        | YES      |                                        | 种族英文                
+race_zh          | text                        | YES      |                                        | 种族中文                
+age              | integer                     | YES      |                                        | 年龄                  
+execution_number | text                        | YES      |                                        | 执行编号                
+tdcj_number      | text                        | YES      |                                        | TDCJ 编号             
+execution_date   | text                        | YES      |                                        | 执行日期文本              
+raw_data         | jsonb                       | YES      |                                        | 原始数据追溯 JSONB，不建议直接展示
+created_at       | timestamp without time zone | YES      | CURRENT_TIMESTAMP                      | 记录创建时间              
+
+4.x farewell_letters
+- 中文含义：中文遗书数据
+- 记录数：39
+- 是否有图片：否
+- 是否有中英文：否，仅中文字段
+- 适合查询：查询中文遗书正文、地区、年龄、性别、职业、时间和方式。
+- 重要字段：body_zh, location_zh, age, gender, occupation
+
+字段列表：
+column_name | data_type                   | nullable | default_value                                | description         
+------------|-----------------------------|----------|----------------------------------------------|---------------------
+id          | integer                     | NO       | nextval('farewell_letters_id_seq'::regclass) | 主键 ID               
+body_zh     | text                        | YES      |                                              | 正文中文翻译或中文原文         
+location_zh | text                        | YES      |                                              | 地点中文                
+age         | text                        | YES      |                                              | 年龄                  
+gender      | text                        | YES      |                                              | 性别                  
+occupation  | text                        | YES      |                                              | 职业                  
+event_time  | text                        | YES      |                                              | 事件时间                
+method      | text                        | YES      |                                              | 方式                  
+raw_data    | jsonb                       | YES      |                                              | 原始数据追溯 JSONB，不建议直接展示
+created_at  | timestamp without time zone | YES      | CURRENT_TIMESTAMP                            | 记录创建时间              
+
+5. 图片字段说明
+----------------
+图片真实存储在 PostgreSQL 中：
+- grave_recipes.images
+- cemetery_stories.images
+
+字段类型：BYTEA[]
+配套字段：image_names, image_mime_types
+
+说明：
+- 图片不是路径。
+- 图片不是 URL。
+- 图片真实存储在 PostgreSQL 的 BYTEA[] 字段中。
+- 前端或后端读取时需要转 base64，或通过图片 API 直接输出二进制。
+- 列表接口不要 SELECT images，只在详情或图片接口读取。
+
+图片 API 示例：
+```js
+app.get("/api/grave-recipes/:id/image/:index", async (req, res) => {
+  const { id, index } = req.params;
+  const result = await pool.query(
+    "SELECT images, image_mime_types FROM grave_recipes WHERE id = $1",
+    [id]
+  );
+
+  const row = result.rows[0];
+  if (!row) return res.status(404).send("Not found");
+
+  const imageIndex = Number(index);
+  const image = row.images[imageIndex];
+  const mime = row.image_mime_types[imageIndex] || "image/jpeg";
+
+  res.setHeader("Content-Type", mime);
+  res.send(image);
+});
+```
+
+注意：PostgreSQL 数组在 Node.js 中一般会变成 Buffer 数组，具体取决于 pg 的解析结果；如果读取异常，需要单独处理 bytea[] 解析。
+
+6. 常用查询 SQL
+----------------
+```sql
+SELECT COUNT(*) FROM last_meals;
+SELECT * FROM last_meals ORDER BY RANDOM() LIMIT 1;
+
+SELECT * FROM last_words
+WHERE body_zh ILIKE '%关键词%'
+OR body_en ILIKE '%keyword%'
+LIMIT 20;
+
+SELECT id, title_zh, cardinality(images) AS image_count
+FROM grave_recipes
+WHERE cardinality(images) > 0;
+
+SELECT id, title_zh, cardinality(images) AS image_count
+FROM cemetery_stories
+WHERE cardinality(images) > 0;
+
+SELECT id, person_name, food_zh, food_en
+FROM last_meals
+LIMIT 20;
+```
+
+7. 推荐 API 调用方式
+--------------------
+- GET /api/db/last-meals
+- GET /api/db/last-meals/random
+- GET /api/db/last-meals/:id
+- GET /api/db/last-words
+- GET /api/db/last-words/random
+- GET /api/db/last-words/:id
+- GET /api/db/grave-recipes
+- GET /api/db/grave-recipes/:id
+- GET /api/db/grave-recipes/:id/image/:index
+- GET /api/db/cemetery-stories
+- GET /api/db/cemetery-stories/:id
+- GET /api/db/cemetery-stories/:id/image/:index
+- GET /api/db/farewell-letters
+- GET /api/db/farewell-letters/:id
+
+8. Node.js 查询示例
+-------------------
+```js
+// 查询最后一餐列表，不读取大字段
+const meals = await pool.query(`
+  SELECT id, person_name, food_zh, food_en, country_zh, execution_year
+  FROM last_meals
+  ORDER BY id
+  LIMIT 50
+`);
+
+// 查询随机遗言
+const lastWord = await pool.query(`
+  SELECT id, person_name, body_zh, body_en, county_zh, race_zh
+  FROM last_words
+  ORDER BY RANDOM()
+  LIMIT 1
+`);
+
+// 查询墓地食谱详情，但不直接输出图片二进制
+const recipe = await pool.query(`
+  SELECT id, title_zh, title_en, story_background_zh, recipe_steps_zh, image_names, image_mime_types, cardinality(images) AS image_count
+  FROM grave_recipes
+  WHERE id = $1
+`, [id]);
+
+// 输出图片接口
+const imageResult = await pool.query(`
+  SELECT images, image_mime_types
+  FROM grave_recipes
+  WHERE id = $1
+`, [id]);
+const image = imageResult.rows[0].images[index];
+const mime = imageResult.rows[0].image_mime_types[index] || 'image/jpeg';
+res.setHeader('Content-Type', mime);
+res.send(image);
+
+// 搜索遗言关键词
+const keyword = `%${q}%`;
+const search = await pool.query(`
+  SELECT id, person_name, body_zh, body_en
+  FROM last_words
+  WHERE body_zh ILIKE $1 OR body_en ILIKE $1
+  LIMIT 20
+`, [keyword]);
+```
+
