@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>人生关键词 / Memoirs of the Old World</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Roboto+Mono:wght@400;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../assets/css/journey/mosaic.css" />
+    <link rel="stylesheet" href="../../assets/css/journey/integration-nav.css" />
+  </head>
+  <body>
+    <div class="sky-bg" aria-hidden="true">
+      <div class="stars-container" id="starsContainer"></div>
+      <div class="moon"></div>
+    </div>
+    <canvas id="particleCanvas" aria-hidden="true"></canvas>
+
+    <a class="back-btn" href="./trouble.html">
+      <span>←</span>
+      <span>返回上一部分</span>
+    </a>
+
+    <div class="mosaic-header">
+      <h1>人生关键词</h1>
+      <p class="header-subtitle" id="headerSubtitle">把许多人最后反复说出的词，拼成一座微光灯塔。</p>
+    </div>
+
+    <main class="mosaic-stage" id="mosaicStage">
+      <div class="floating-words active" id="floatingWords"></div>
+      <div class="lighthouse-outline" id="lighthouseOutline" aria-hidden="true">
+        <svg class="lighthouse-svg" viewBox="0 0 400 500" role="img" aria-label="关键词灯塔">
+          <defs>
+            <linearGradient id="towerGrad" x1="0%" x2="100%" y1="0%" y2="100%">
+              <stop offset="0%" stop-color="rgba(244,233,217,0.28)" />
+              <stop offset="100%" stop-color="rgba(201,166,107,0.10)" />
+            </linearGradient>
+          </defs>
+          <path class="lighthouse-beam" d="M200 100 L24 18 L28 178 L200 122 Z" fill="rgba(244,164,96,0.18)" />
+          <path class="lighthouse-beam" d="M200 100 L376 18 L372 178 L200 122 Z" fill="rgba(244,164,96,0.14)" />
+          <circle class="lighthouse-lamp" cx="200" cy="112" r="14" fill="rgba(244,233,217,0.72)" />
+          <path d="M170 142 L230 142 L260 430 L140 430 Z" fill="url(#towerGrad)" stroke="rgba(244,233,217,0.26)" stroke-width="2" />
+          <path d="M150 430 L250 430 L280 468 L120 468 Z" fill="rgba(244,233,217,0.08)" stroke="rgba(244,233,217,0.18)" />
+          <path d="M162 142 L238 142 L222 92 L178 92 Z" fill="rgba(244,233,217,0.10)" stroke="rgba(244,233,217,0.24)" />
+          <line x1="158" y1="226" x2="242" y2="226" stroke="rgba(244,233,217,0.18)" />
+          <line x1="151" y1="310" x2="249" y2="310" stroke="rgba(244,233,217,0.16)" />
+        </svg>
+      </div>
+    </main>
+
+    <section class="word-detail" id="wordDetail" aria-live="polite">
+      <div class="detail-backdrop"></div>
+      <article class="detail-card">
+        <button class="detail-close" id="detailClose" type="button">×</button>
+        <p class="detail-label">KEYWORD</p>
+        <h2 id="detailWord">LOVE</h2>
+        <p class="detail-count"><span id="detailCount">0</span> records</p>
+        <div class="detail-sentences" id="detailSentences"></div>
+      </article>
+    </section>
+
+    <footer class="mosaic-footer" id="footerStats" aria-label="关键词统计"></footer>
+
+    <nav class="journey-flow-nav" aria-label="人生关键词页面导航">
+      <a href="../archives/keyword.html">进入墓地故事档案馆</a>
+      <a class="primary" href="./tombstone.html">下一部分：墓碑设计</a>
+    </nav>
+
+    <div class="loading-overlay" id="loadingOverlay">
+      <p>正在整理旧世界的关键词……</p>
+    </div>
+
+    <script src="../../assets/js/journey/mosaic.js"></script>
+  </body>
+</html>

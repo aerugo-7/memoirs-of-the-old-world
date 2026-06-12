@@ -7,6 +7,7 @@ const { ensureUsersTable } = require("./db");
 const { registerGitHubAuth, logGitHubOAuthStartup } = require("./auth-github");
 const { ensureMemoryHallTables, registerMemoryRoomRoutes } = require("./memory-room");
 const { ensureCommunityTables, registerCommunityRoutes } = require("./community");
+const { registerJourneyDataRoutes } = require("./journey-data");
 
 const ROOT = path.resolve(__dirname, "..");
 const PORT = Number(process.env.PORT || 3000);
@@ -42,6 +43,7 @@ async function main() {
   }));
 
   registerGitHubAuth(app);
+  registerJourneyDataRoutes(app);
   registerMemoryRoomRoutes(app);
   registerCommunityRoutes(app);
   app.get("/api/ping", (req, res) => {

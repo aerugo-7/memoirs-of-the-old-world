@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>记忆餐桌 / The Memory Table</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="../../assets/css/journey/memory-table.css">
+    <link rel="stylesheet" href="../../assets/css/journey/integration-nav.css" />
+  </head>
+<body>
+
+  <!-- 加载屏幕 -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-content">
+      <span class="loading-candle">🕯</span>
+      <p class="loading-text">正在点燃记忆...</p>
+    </div>
+  </div>
+
+  <!-- 档案开场界面 -->
+  <div class="archive-intro" id="archiveIntro">
+    <div class="intro-paper">
+      <div class="paper-header">
+        <span class="stamp">档案</span>
+      </div>
+      
+      <div class="archive-info">
+        <div class="info-row">
+          <span class="label">档案编号</span>
+          <span class="value" id="archiveId">MT-742</span>
+        </div>
+        <div class="info-row">
+          <span class="label">状态</span>
+          <span class="value status">未完成归档</span>
+        </div>
+        <div class="info-row">
+          <span class="label">发现日期</span>
+          <span class="value" id="archiveDate"></span>
+        </div>
+      </div>
+      
+      <div class="intro-text">
+        <p class="text-line">我们发现了一张无人认领的餐桌。</p>
+        <p class="text-line delay-1">桌子的主人已经离开很久了。</p>
+        <p class="text-line delay-2">没有姓名。</p>
+        <p class="text-line delay-3">没有身份。</p>
+        <p class="text-line delay-4">只留下：</p>
+        <p class="text-line delay-5 highlight">一顿饭。几封信。几张照片。一本菜谱。</p>
+        <p class="text-line delay-6">请帮助我们重新认识他。</p>
+      </div>
+      
+      <button class="start-btn" id="startBtn">
+        <span class="btn-text">开始整理档案</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 主场景容器 -->
+  <div class="scene-container" id="sceneContainer">
+    
+    <!-- 档案进度 HUD -->
+    <div class="archive-hud" id="archiveHud">
+      <div class="hud-section progress-section">
+        <div class="hud-label">档案完整度</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text"><span id="progressPercent">0</span>%</div>
+      </div>
+      
+      <div class="hud-section clues-section">
+        <div class="hud-label">线索收集</div>
+        <div class="clues-grid">
+          <div class="clue-dot" id="clueCoffee" data-name="咖啡">☕</div>
+          <div class="clue-dot" id="clueLetter" data-name="信件">💌</div>
+          <div class="clue-dot" id="cluePhoto" data-name="照片">📷</div>
+          <div class="clue-dot" id="clueRecipe" data-name="菜谱">📖</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 人物画像 HUD -->
+    <div class="profile-hud" id="profileHud">
+      <div class="hud-label">我们正在认识的人</div>
+      <div class="profile-name" id="profileName">未知</div>
+      <div class="profile-tags" id="profileTags">
+        <span class="tag init">尚未发现任何线索...</span>
+      </div>
+    </div>
+
+    <!-- 背景层 -->
+    <div class="scene-bg" id="sceneBg">
+      <div class="bg-image"></div>
+      <div class="bg-overlay"></div>
+      <div class="light-leaks">
+        <div class="light-spot light-1"></div>
+        <div class="light-spot light-2"></div>
+        <div class="light-spot light-3"></div>
+      </div>
+    </div>
+
+    <!-- 粒子层 -->
+    <div class="dust-container" id="dustContainer"></div>
+
+    <!-- 场景主体 -->
+    <div class="scene-main" id="sceneMain">
+      
+      <!-- 热点：咖啡杯 -->
+      <div class="hotspot hotspot-coffee" id="hotspotCoffee" data-scene="coffee">
+        <div class="steam-container">
+          <div class="steam steam-1"></div>
+          <div class="steam steam-2"></div>
+          <div class="steam steam-3"></div>
+        </div>
+        <div class="hotspot-hint">桌上的咖啡已经凉了</div>
+      </div>
+
+      <!-- 热点：蛋糕 -->
+      <div class="hotspot hotspot-cake" id="hotspotCake" data-scene="recipe">
+        <div class="hotspot-hint">一本泛黄的菜谱</div>
+      </div>
+
+      <!-- 热点：水果盘 -->
+      <div class="hotspot hotspot-fruit" id="hotspotFruit" data-scene="words">
+        <div class="hotspot-hint">桌上的水果已经风干</div>
+      </div>
+
+      <!-- 热点：信封 -->
+      <div class="hotspot hotspot-envelope" id="hotspotEnvelope" data-scene="letter">
+        <div class="envelope-flap"></div>
+        <div class="hotspot-hint">信封被反复打开过很多次</div>
+      </div>
+
+      <!-- 热点：照片 -->
+      <div class="hotspot hotspot-photo" id="hotspotPhoto" data-scene="photo">
+        <div class="photo-stack">
+          <div class="photo photo-1"></div>
+          <div class="photo photo-2"></div>
+        </div>
+        <div class="hotspot-hint">照片背后似乎写着什么</div>
+      </div>
+
+    </div>
+
+    <!-- 纸卡容器 -->
+    <div class="cards-container" id="cardsContainer">
+      
+      <!-- 咖啡/菜单纸卡 -->
+      <div class="scene-card coffee-card" id="cardCoffee">
+        <button class="card-close" data-close="coffee">×</button>
+        <div class="card-content">
+          <div class="card-narrative" id="coffeeNarrative">
+            <p class="narrative-text">桌上的咖啡已经凉了。</p>
+            <p class="narrative-text">旁边放着一张菜单。</p>
+            <p class="narrative-text">似乎是很久以前的...</p>
+            <button class="narrative-btn" id="revealCoffee">查看菜单</button>
+          </div>
+          
+          <div class="card-revealed" id="coffeeRevealed" style="display: none;">
+            <h2 class="card-title">最后的菜单</h2>
+            <div class="menu-list" id="menuList">
+              <!-- 动态加载 -->
+            </div>
+            
+            <div class="analysis-section" id="coffeeAnalysis" style="display: none;">
+              <div class="analysis-header">📋 档案分析</div>
+              <div class="analysis-content" id="coffeeAnalysisContent"></div>
+              <button class="record-btn" data-tag="喜欢熟悉的味道,重视饮食记忆" data-type="coffee">记录到人物画像</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 信件纸卡 -->
+      <div class="scene-card letter-card" id="cardLetter">
+        <button class="card-close" data-close="letter">×</button>
+        <div class="card-content">
+          <div class="card-narrative" id="letterNarrative">
+            <p class="narrative-text">信封已经泛黄。</p>
+            <p class="narrative-text">边缘有明显折痕。</p>
+            <p class="narrative-text">似乎被反复打开过很多次。</p>
+            <button class="narrative-btn" id="revealLetter">打开信封</button>
+          </div>
+          
+          <div class="letter-envelope" id="letterEnvelope" style="display: none;">
+            <div class="envelope-body">
+              <div class="envelope-flap-animated"></div>
+              <div class="envelope-paper">
+                <div class="letter-content" id="letterContent"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="analysis-section" id="letterAnalysis" style="display: none;">
+            <div class="analysis-header">📋 档案分析</div>
+            <div class="analysis-content" id="letterAnalysisContent"></div>
+            <button class="record-btn" data-tag="重视家庭,善于表达感谢" data-type="letter">记录到人物画像</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 照片纸卡 -->
+      <div class="scene-card photo-card" id="cardPhoto">
+        <button class="card-close" data-close="photo">×</button>
+        <div class="card-content">
+          <div class="card-narrative" id="photoNarrative">
+            <p class="narrative-text">照片泛黄卷边。</p>
+            <p class="narrative-text">照片背后似乎写着什么。</p>
+            <button class="narrative-btn" id="revealPhoto">翻转查看</button>
+          </div>
+          
+          <div class="photo-flip-container" id="photoFlipContainer" style="display: none;">
+            <div class="photo-frame">
+              <div class="photo-front"></div>
+              <div class="photo-back" id="photoBack">
+                <div class="back-content" id="photoBackContent"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="analysis-section" id="photoAnalysis" style="display: none;">
+            <div class="analysis-header">📋 档案注释</div>
+            <div class="analysis-content" id="photoAnalysisContent"></div>
+            <button class="record-btn" data-tag="珍惜陪伴,怀念过去" data-type="photo">记录到人物画像</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 食谱纸卡 -->
+      <div class="scene-card recipe-card" id="cardRecipe">
+        <button class="card-close" data-close="recipe">×</button>
+        <div class="card-content">
+          <div class="card-narrative" id="recipeNarrative">
+            <p class="narrative-text">一本泛黄的菜谱。</p>
+            <p class="narrative-text">被保留了几十年。</p>
+            <p class="narrative-text">似乎被翻阅过无数次。</p>
+            <button class="narrative-btn" id="revealRecipe">翻开菜谱</button>
+          </div>
+          
+          <div class="recipe-book" id="recipeBook" style="display: none;">
+            <div class="recipe-page page-left" id="recipeLeft">
+              <div class="page-header">菜谱目录</div>
+              <div class="page-content" id="recipeList"></div>
+            </div>
+            <div class="recipe-page page-right" id="recipeRight">
+              <div class="page-header">详情</div>
+              <div class="recipe-detail" id="recipeDetail">
+                <p class="recipe-hint">选择一个食谱翻开</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="analysis-section" id="recipeAnalysis" style="display: none;">
+            <div class="analysis-header">📋 档案发现</div>
+            <div class="analysis-content" id="recipeAnalysisContent"></div>
+            <button class="record-btn" data-tag="喜欢分享,热爱生活" data-type="recipe">记录到人物画像</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 回忆碎片纸卡 -->
+      <div class="scene-card words-card" id="cardWords">
+        <button class="card-close" data-close="words">×</button>
+        <div class="card-content">
+          <div class="card-narrative" id="wordsNarrative">
+            <p class="narrative-text">桌上的水果已经风干。</p>
+            <p class="narrative-text">旁边散落着一些零散的话语。</p>
+            <p class="narrative-text">像是餐桌主人最后的呢喃...</p>
+            <button class="narrative-btn" id="revealWords">查看遗言</button>
+          </div>
+          
+          <div class="card-revealed" id="wordsRevealed" style="display: none;">
+            <h2 class="card-title">最后的遗言</h2>
+            <div class="fragments-container" id="fragmentsContainer">
+              <!-- 动态加载 -->
+            </div>
+            
+            <div class="analysis-section" id="wordsAnalysis" style="display: none;">
+              <div class="analysis-header">📋 档案分析</div>
+              <div class="analysis-content" id="wordsAnalysisContent"></div>
+              <button class="record-btn" data-tag="内心温暖,善于感恩" data-type="words">记录到人物画像</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 最终档案弹窗 -->
+    <div class="finale-overlay" id="finaleOverlay">
+      <div class="finale-content" id="finaleContent">
+        <!-- 动态内容 -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 脚本 -->
+  <script src="../../assets/js/journey/memory-table.js"></script>
+
+    <nav class="journey-flow-nav" aria-label="记忆餐桌页面导航">
+      <a href="../archives/eating.html">进入吃相关档案馆</a>
+      <a class="primary" href="./trouble.html">下一部分：留在旧世界的烦恼</a>
+    </nav>
+  </body>
+</html>

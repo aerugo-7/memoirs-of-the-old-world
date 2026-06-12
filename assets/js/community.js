@@ -11,7 +11,6 @@ const viewCopy = {
   wall: ["留言墙", "一面旧墙，贴着来自不同访客的短句。"],
   posts: ["分享社区", "把一段旧世界日志放进公共档案，等待他人的回声。"],
   mine: ["我的发布", "你留在公共档案馆里的纸条、日志与回声。"],
-  agent: ["AI档案管理员", "暂时由预设回复值班，后续可以接入真正的工作流。"],
 };
 
 const noteColors = [
@@ -43,9 +42,6 @@ const elements = {
   noteWall: $("#noteWall"),
   postGrid: $("#postGrid"),
   mineList: $("#mineList"),
-  agentInput: $("#agentInput"),
-  sendAgentBtn: $("#sendAgentBtn"),
-  agentChat: $("#agentChat"),
   postDialog: $("#postDialog"),
   closePostDialog: $("#closePostDialog"),
   postDetail: $("#postDetail"),
@@ -131,7 +127,7 @@ function switchView(view) {
     button.classList.toggle("is-active", button.dataset.view === view);
   });
   document.querySelectorAll(".view-panel").forEach((panel) => {
-    panel.classList.toggle("is-active", panel.id === `${view === "posts" ? "posts" : view}View`);
+    panel.classList.toggle("is-active", panel.id === `${view}View`);
   });
 
   elements.noteComposer.classList.toggle("is-hidden", view !== "wall");
@@ -407,25 +403,6 @@ function renderMine() {
   elements.mineList.innerHTML = blocks.length ? blocks.join("") : `<p class="empty-state">你还没有在公共档案馆留下内容。</p>`;
 }
 
-async function sendAgentMessage() {
-  const message = elements.agentInput.value.trim();
-  if (!message) return;
-
-  elements.agentChat.insertAdjacentHTML("beforeend", `<p class="visitor-message">${escapeHtml(message)}</p>`);
-  elements.agentInput.value = "";
-
-  try {
-    const data = await fetchJson("/api/community/agent", {
-      method: "POST",
-      body: JSON.stringify({ message }),
-    });
-    elements.agentChat.insertAdjacentHTML("beforeend", `<p class="agent-message">${escapeHtml(data.reply)}</p>`);
-  } catch (error) {
-    console.error("[Community] agent failed", error);
-    elements.agentChat.insertAdjacentHTML("beforeend", `<p class="agent-message">值班窗口暂时没有回应。</p>`);
-  }
-}
-
 function bindEvents() {
   document.querySelectorAll(".tab-button").forEach((button) => {
     button.addEventListener("click", () => switchView(button.dataset.view));
@@ -436,12 +413,6 @@ function bindEvents() {
   });
   elements.publishNoteBtn.addEventListener("click", publishNote);
   elements.publishPostBtn.addEventListener("click", publishPost);
-  elements.sendAgentBtn.addEventListener("click", sendAgentMessage);
-  elements.agentInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") sendAgentMessage();
-  });
-
-  $("#toggleAgentBtn").addEventListener("click", () => switchView("agent"));
   elements.closePostDialog.addEventListener("click", () => elements.postDialog.close());
 
   elements.postGrid.addEventListener("click", (event) => {

@@ -20,7 +20,7 @@ function getCallbackUrl() {
 }
 
 function getLocalCallbackUrl() {
-  return "http://localhost:3000/auth/github/callback";
+  return "http://localhost:3100/auth/github/callback";
 }
 
 function buildGitHubAuthorizeUrl(redirectUri, state) {
@@ -35,7 +35,7 @@ function buildGitHubAuthorizeUrl(redirectUri, state) {
 }
 
 function logGitHubOAuthStartup() {
-  const callbackUrl = getLocalCallbackUrl();
+  const callbackUrl = getCallbackUrl();
   console.log(`[GitHub OAuth] GITHUB_CLIENT_ID loaded: ${getEnv("GITHUB_CLIENT_ID") ? "yes" : "no"}`);
   console.log(`[GitHub OAuth] GITHUB_CALLBACK_URL: ${callbackUrl}`);
   if (getEnv("GITHUB_CLIENT_ID")) {

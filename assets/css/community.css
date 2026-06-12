@@ -66,6 +66,7 @@ body.community-page {
 .user-card,
 .composer-panel,
 .agent-card,
+.archive-entry-card,
 .terminal-card,
 .chat-card {
   border: 1px solid rgba(216, 198, 165, 0.17);
@@ -137,7 +138,8 @@ body.community-page {
 }
 
 .composer-panel,
-.agent-card {
+.agent-card,
+.archive-entry-card {
   margin-top: 18px;
   padding: 18px;
 }
@@ -147,7 +149,8 @@ body.community-page {
 }
 
 .composer-panel h2,
-.agent-card h2 {
+.agent-card h2,
+.archive-entry-card h2 {
   margin: 0 0 12px;
   color: rgba(244, 230, 199, 0.9);
   font-family: var(--font-serif);
@@ -193,9 +196,34 @@ body.community-page {
   font-size: 13px;
 }
 
-.agent-card p {
+.agent-card p,
+.archive-entry-card p {
   color: rgba(216, 198, 165, 0.68);
   line-height: 1.75;
+}
+
+.archive-entry-links {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.archive-entry-links a {
+  display: block;
+  padding: 11px 12px;
+  border: 1px solid rgba(216, 198, 165, 0.18);
+  background: rgba(216, 198, 165, 0.055);
+  color: rgba(244, 230, 199, 0.82);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.archive-entry-links a:hover {
+  transform: translateX(2px);
+  border-color: rgba(244, 230, 199, 0.36);
+  background: rgba(216, 198, 165, 0.095);
 }
 
 .community-content {
