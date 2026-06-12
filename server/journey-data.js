@@ -59,6 +59,12 @@ function sendImage(res, row) {
 }
 
 function registerJourneyDataRoutes(app) {
+  console.log("[JourneyData] routes registered");
+
+  app.get("/api/journey-data/ping", (req, res) => {
+    res.json({ ok: true, message: "journey data routes alive" });
+  });
+
   app.get("/api/stats", asyncRoute(async (req, res) => {
     const result = await query(`
       SELECT
